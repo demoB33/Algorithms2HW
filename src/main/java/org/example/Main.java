@@ -99,6 +99,7 @@ public class Main {
         System.out.println(contains(arr,4));
         System.out.println(contains(arr,5));
 
+
     }
 
 }
