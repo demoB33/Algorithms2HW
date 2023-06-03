@@ -4,6 +4,26 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
+    public static boolean contains(Integer[] arr, int element) {
+        int min = 0;
+        int max = arr.length - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (element == arr[mid]) {
+                return true;
+            }
+
+            if (element < arr[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return false;
+    }
+
     public static void sortBubble(int[] arr) {
         for (int i = arr.length - 1; i > 0; i--) {
             for (int j = 0; j < i; j++) {
@@ -72,6 +92,12 @@ public class Main {
         System.out.println("sortInsertion: " + time);
 
 
+        Integer[] arr = {1, 2, 3, 4, 5};
+        System.out.println(contains(arr,1));
+        System.out.println(contains(arr,2));
+        System.out.println(contains(arr,3));
+        System.out.println(contains(arr,4));
+        System.out.println(contains(arr,5));
 
     }
 
