@@ -33,6 +33,10 @@ public class IntegerArrayList implements IntegerList {
     @Override
     public Integer add(int index, Integer item) {
         checkBounds(index);
+        if (currentSize >= data.length) {
+            grow();
+        }
+
         if (currentSize == data.length) {
             resize(currentSize + 1);
         }
@@ -42,6 +46,12 @@ public class IntegerArrayList implements IntegerList {
         data[index] = item;
         currentSize++;
         return item;
+    }
+
+    private void grow() {
+        Integer[] data = new Integer[(int)(this.data.length * 1.5)];
+        System.arraycopy(this.data, 0 , data, 0, this.data.length);
+        this.data = data;
     }
 
     @Override
@@ -73,8 +83,27 @@ public class IntegerArrayList implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
-        sortInsertion();
-        return search(item);
+        checkBounds(item);
+        Integer[] copy = toArray();
+        search(copy, 0, copy.length - 1);
+
+        int min = 0;
+        int max = copy.length - 1;
+
+        while (min <= max) {
+            int mid = (min + max) / 2;
+
+            if (item == copy[mid]) {
+                return true;
+            }
+
+            if (item < copy[mid]) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -179,25 +208,32 @@ public class IntegerArrayList implements IntegerList {
         }
     }
 
-    private boolean search(Integer item) {
-        int min = 0;
-        int max = currentSize - 1;
+    private void search(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+            search(arr, begin, partitionIndex - 1);
+            search(arr, partitionIndex + 1, end);
+        }
 
-        while (min <= max) {
-            int mid = (min + max) / 2;
-
-            if (data[mid].compareTo(item) == 0) {
-                return true;
-            }
-
-            if (data[mid].compareTo(item) < 0) {
-                max = mid - 1;
-            } else {
-                min = mid + 1;
+    }
+    private  int partition(Integer[] arr, int begin, int end) {
+        Integer pivot = arr[end];
+        int i = (begin - 1);
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swap(arr, i, j);
             }
         }
-        return false;
+        swap(arr, i + 1, end);
+        return i + 1;
     }
+    private  void  swap(Integer[] arr, int left, int right) {
+        Integer temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+
 
 
 }

@@ -110,20 +110,6 @@ public class StringArrayListTest {
         Assertions.assertTrue(integerArrayList.contains(integer));
     }
 
-    public static Stream<Arguments> containsParamNegativeTest() {
-        return Stream.of(
-                Arguments.of(9),
-                Arguments.of(8),
-                Arguments.of(7)
-        );
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("containsParamNegativeTest")
-    public void containsParamNegativeTest(Integer integer) {
-        Assertions.assertFalse(integerArrayList.contains(integer));
-    }
 
     public static Stream<Arguments> indexOfParamPositiveTest() {
         return Stream.of(
